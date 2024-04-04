@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,7 +13,7 @@ public class NamesList {
         names = new ArrayList<>();
     }
 
-    public void startUserInterface() {
+    public void startUserInterface() throws FileNotFoundException {
         System.out.println("""
                 Welcome to the NamesList - enterprise edition.
                 ----------------------------------------------
@@ -28,7 +32,6 @@ public class NamesList {
                 case 0 -> exit();
                 default -> System.out.println("Unknown command - please use 0-4");
             }
-
         }
     }
 
@@ -60,14 +63,21 @@ public class NamesList {
         System.out.println("Done");
     }
 
-    private void saveListOfNames() {
-        // TODO: Implement save of the names list to a file
-        System.out.println("NOT IMPLEMENTED");
+    private void saveListOfNames() throws FileNotFoundException {
+        PrintStream out = new PrintStream(new FileOutputStream(("names.txt"), true));
+        for (String name:names) {
+            out.println();
+            out.print(name);
+        }
+
     }
 
-    private void loadListOfNames() {
-        // TODO: Implement load of the names list from a file
-        System.out.println("NOT IMPLEMENTED");
+    private void loadListOfNames() throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File("names.txt"));
+        while(scanner.hasNextLine()){
+            System.out.println(scanner.nextLine());
+        }
+        scanner.close();
     }
 
     private void displayListOfNames() {
@@ -88,11 +98,9 @@ public class NamesList {
                 ...
                 Thank you for using NamesList - enterprise edition.
                 Don't forget to subscribe to our newsletter!""");
-
     }
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         NamesList app = new NamesList();
         app.startUserInterface();
     }
